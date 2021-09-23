@@ -79,5 +79,4 @@ int main() {
       cout << "Message code (" << message << ") is lexicographically greater than the Authenticator code (" << authenticator << ")" << endl;
     }
   }
-
 }
