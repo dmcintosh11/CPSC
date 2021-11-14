@@ -29,7 +29,7 @@ TicTacToe::TicTacToe() {
 void TicTacToe::play() {
 
   while(!isOver()) {
-
+    std::cout << "--------" << std::endl;
     displayGrid();
     promptUser();
     while(!emptySpace(currRow, currCol)) {
@@ -43,12 +43,14 @@ void TicTacToe::play() {
     }
     if(playerWon()) {
       std::cout << "You have won!" << std::endl;
-
+      displayGrid();
     } else if(botWon()) {
       std::cout << "You have lost!" << std::endl;
+      displayGrid();
 
     } else if (isDraw()) {
       std::cout << "Game is a tie!" << std::endl;
+      displayGrid();
     }
   }
 
@@ -121,14 +123,31 @@ bool TicTacToe::emptySpace(int r, int c) {
 }
 
 void TicTacToe::botTurn() {
-  for(int r = 0; r < 3; ++r) {
+
+  srand(time(NULL));
+
+  int randRow = rand() % 3;
+  int randCol = rand() % 3;
+
+  while(!emptySpace(randRow, randCol)) {
+    randRow = rand() % 3;
+    randCol = rand() % 3;
+  }
+
+  changeGrid(randRow, randCol, 0);
+
+
+
+
+  //OLD IMPLEMENTATION; looks for next available space
+  /*for(int r = 0; r < 3; ++r) {
     for(int c = 0; c < 3; ++c) {
       if(emptySpace(r, c)) {
         changeGrid(r, c, 0);
         return;
       }
     }
-  }
+  } */
 }
 
 bool TicTacToe::isOver() {
@@ -218,5 +237,6 @@ TicTacToe::~TicTacToe() {
     delete[] grid[i];
 
   }
+  delete[] grid;
 
 }
