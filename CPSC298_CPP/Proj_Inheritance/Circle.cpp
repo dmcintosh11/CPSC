@@ -9,9 +9,9 @@ Circle::~Circle() {
 
 }
 
-void Circle::scale(double dSccaleFactor) {
-  height *= 2;
-  width *= 2;
+void Circle::scale(double dScaleFactor) {
+  height *= dScaleFactor;
+  width *= dScaleFactor;
 }
 
 double Circle::perimeter() {

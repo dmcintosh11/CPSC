@@ -8,9 +8,9 @@ Rectangle::~Rectangle(){
 
 }
 
-void Rectangle::scale(double dSccaleFactor) {
-  height *= 2;
-  width *= 2;
+void Rectangle::scale(double dScaleFactor) {
+  height *= dScaleFactor;
+  width *= dScaleFactor;
 }
 
 double Rectangle::perimeter() {

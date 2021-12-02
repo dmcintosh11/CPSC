@@ -7,7 +7,7 @@ class Shape {
 public:
   Shape(double dHeight, double dWidth);
   virtual ~Shape();
-  virtual void scale(double scaleFactor) = 0;
+  virtual void scale(double dScaleFactor) = 0;
   virtual double area() = 0;
   virtual double perimeter() = 0;
   virtual void displayProperties();
