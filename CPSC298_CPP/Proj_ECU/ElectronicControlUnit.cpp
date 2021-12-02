@@ -42,6 +42,9 @@ ElectronicControlUnit::~ElectronicControlUnit() {
     switch(c) {
       case 'A':
       case 'a':
+        if(activatedBeltTires) {
+          actuateBelt;
+        }
         actuateHydraulics();
         break;
       case 'B':
