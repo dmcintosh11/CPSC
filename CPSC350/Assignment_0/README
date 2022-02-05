@@ -1,0 +1,18 @@
+README Assignment 0: HelloWorld
+
+1. Dylan McIntosh
+   2368740
+   dmcintosh@chapman.edu
+   CPSC 350-01
+   Assignment 0: HelloWorld
+
+2. main.cpp
+   HelloWorld.h
+   HelloWorld.cpp
+
+3. No known errors
+
+4. No references
+
+5. g++ -o out main.cpp
+   ./out
