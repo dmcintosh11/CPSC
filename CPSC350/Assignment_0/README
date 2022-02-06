@@ -14,5 +14,5 @@ README Assignment 0: HelloWorld
 
 4. No references
 
-5. g++ -o out main.cpp
+5. g++ -o out *.cpp
    ./out
