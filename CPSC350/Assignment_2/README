@@ -1,10 +1,10 @@
-README Assignment 1: Tutnese Translator
+README Assignment 2: Tutnese Translator Part 2
 
 1. Dylan McIntosh
    2368740
    dmcintosh@chapman.edu
    CPSC 350-01
-   Assignment 1: Tutnese Translator
+   Assignment 2: Tutnese Translator Part 2
 
 2. main.cpp
    Model.h
@@ -13,10 +13,17 @@ README Assignment 1: Tutnese Translator
    Translator.cpp
    FileProcessor.h
    FileProcessor.cpp
+   TutModel.h
+   TutModel.cpp
 
 3. No known errors
 
-4. Used https://www.cplusplus.com/doc/tutorial/files/ to refresh on file IO
+4. No references
 
-5. g++ -o out *.cpp
-   ./out input.txt output.txt
+5. g++ -o run *.cpp
+
+   //For English to Tutnese translation
+   ./run input.txt output.txt E2T
+
+   //For Tutnese to English translation
+   ./run input.txt output.txt T2E
