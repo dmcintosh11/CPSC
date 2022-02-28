@@ -1,5 +1,6 @@
 #include "FileProcessor.h"
 #include <fstream>
+#include <iostream>
 
 FileProcessor::FileProcessor() {
 
@@ -19,8 +20,14 @@ void FileProcessor::processFile(std::string in, std::string out) {
   outFile.open(out);
 
   while(getline(inFile, words)) {
-    outFile << t.translateEnglishSentence(words) << "\n";
+    if(!words.empty()) {
+      outFile << t.translateEnglishSentence(words) << "\n";
+    } else {
+      outFile << "\n";
+    }
   }
 
   outFile.close();
+
+  return;
 }
