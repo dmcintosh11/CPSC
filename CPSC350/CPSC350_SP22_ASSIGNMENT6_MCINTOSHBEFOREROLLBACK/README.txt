@@ -24,7 +24,7 @@ README Assignment 6: Database
    StudentTree.h
    StudentTree.cpp
 
-3. No known errors
+3. Rollback feature not implemented
 
 4. Used bst and linked list files given in slack channel to modify into a usable implementation
    Used https://stackoverflow.com/questions/7663709/how-can-i-convert-a-stdstring-to-int to help remember how to convert string to an int
