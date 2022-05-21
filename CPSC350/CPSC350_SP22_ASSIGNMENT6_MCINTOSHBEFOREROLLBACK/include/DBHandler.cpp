@@ -15,18 +15,19 @@ DBHandler::DBHandler() {
 DBHandler::~DBHandler() {
 
 }
-
+//Function that runs the whole system and manages user input to adjust trees
 void DBHandler::run() {
   int in = 0;;
   while(in != 14) { //When input is 14, program exits
-    in = promptUser();
+    in = promptUser(); //Asks which option the user would like to do
+    //Initializes variables to use for object creation
     int id = -1;
     int studID = -1;
     int facID = -1;
     Faculty f;
     Student s;
 
-    fillEmptyAdvisors();
+    fillEmptyAdvisors(); //Checks for any students without advisor and gives them one so that every student has an advisor
 
       if(in == 1)
       {
@@ -95,7 +96,7 @@ void DBHandler::run() {
             cout << "Advisees are: " << endl;
           }
 
-          while(cur != NULL) {
+          while(cur != NULL) { //Goes through all advisees and prints their informatoin
             int studID = cur->data;
             getStudent(studID).printInfo();
             cout << "-----------" << endl;
@@ -107,14 +108,14 @@ void DBHandler::run() {
       {
         //updateStack();
         s = promptForStudent();
-        addStudent(s);
+        addStudent(s); //Adds student to tree
       }
       if(in == 8)
       {
         //updateStack();
         id = promptID();
-        studTree.deleteStudent(id);
-        unassignStud(id);
+        studTree.deleteStudent(id); //Deletes student from tree
+        unassignStud(id); //Removes student from advisee list of all faculty
       }
       if(in == 9)
       {
@@ -140,7 +141,7 @@ void DBHandler::run() {
         cin >> facID;
         if(!studIDExists(studID) || !facIDExists(facID)) {
           cout << "ID doesn't exist" << endl;
-        } else if(getStudent(studID).getAdvisor() != facID){
+        } else if(getStudent(studID).getAdvisor() != facID){ //Removes advisee from old advisor advisee list and adjusts new faculty advisee list to include student
           deleteAdvisee(getStudent(studID).getAdvisor(), studID);
           setAdvisor(studID, facID);
           addAdvisee(facID, studID);
@@ -163,7 +164,7 @@ void DBHandler::run() {
           cout << "ID doesn't exists" << endl;
         } else {
           s = getStudent(studID);
-          if(s.getAdvisor() == facID){
+          if(s.getAdvisor() == facID){ //Removes advisor from student and removes student from advisor advisee list
             studTree.setAdvisor(studID, -1);
             deleteAdvisee(facID, studID);
           } else {
@@ -190,61 +191,61 @@ void DBHandler::run() {
   }
   save();
 }
-
+//Returns instance of faculty with given id
 Faculty DBHandler::getFaculty(int id) {
   return facTree.find(id)->key;
 }
-
+//Returns instance of student with given id
 Student DBHandler::getStudent(int id) {
   return studTree.find(id)->key;
 }
-
+//Adds student to the student tree
 void DBHandler::addStudent(Student s) {
   studTree.addStudent(s);
 }
-
+//Adds faculty to faculty tree
 void DBHandler::addFaculty(Faculty f) {
   facTree.addFaculty(f);
 }
-
+//Changes advisor for the student
 void DBHandler::setAdvisor(int studID, int facID) {
   studTree.find(studID)->key.setAdvisor(facID);
 }
-
+//Adds student to advisee list of given faculty with the given id
 void DBHandler::addAdvisee(int facID, int studID) {
   facTree.find(facID)->key.addAdvisee(studID);
 }
-
+//Deletes student from the faculty advisee list
 void DBHandler::deleteAdvisee(int facID, int studID) {
   facTree.find(facID)->key.removeAdvisee(studID);
 }
-
+//Gets user input for an id
 int DBHandler::promptID() {
   cout << "Enter ID: " << endl;
   int id = -1;
   cin >> id;
   return id;
 }
-
+//Checks if there is a student with given id
 bool DBHandler::studIDExists(int id) {
   studTree.contains(id);
 }
-
+//Checks if there is a faculty with given id
 bool DBHandler::facIDExists(int id) {
   facTree.contains(id);
 }
-
+//Unassigns faculty from all students so no student has them as their advisor
 void DBHandler::unassignFac(int id) {
   studTree.unassignAdvisor(id);
 }
-
+//Unassigns student from all faculty advisee lists
 void DBHandler::unassignStud(int id) {
   facTree.unassignAdvisee(id);
 }
-
+//Gets user input for which action to take
 int DBHandler::promptUser() {
   int in = 0;
-  while(in < 1 || in > 14) {
+  while(in < 1 || in > 14) {//Loops until user enters proper input
     cout << "-----------" << endl;
     cout << "1. Print all students and their information (sorted by ascending id #)"  << endl;
     cout << "2. Print all faculty and their information (sorted by ascending id #)"  << endl;
@@ -267,7 +268,7 @@ int DBHandler::promptUser() {
   return in;
 }
 
-//Finish prompting ALSO *********HOW TO HANDLE ADVISOR IF NO ADVISOR EXISTS
+//Prompts user for correct user information to create a student object with
 Student DBHandler::promptForStudent() {
   int id = -1;
   string name = "None";
@@ -296,24 +297,24 @@ Student DBHandler::promptForStudent() {
   cout << "Enter student GPA: " << endl;
   cin >> GPA;
 
-  if(facTree.isEmpty()) {
+  if(facTree.isEmpty()) { //If there are no faculty, initializes student with advisor value of -1 to indicate no advisor
     Student s = Student(id, name, level, field, GPA);
     return s;
-  } else {
+  } else { //If there are faculty then it asks which faculty to assign as the student's advisor
     cout << "Enter faculty ID: " << endl;
     cin >> advisor;
-    while(!facIDExists(advisor)) {
+    while(!facIDExists(advisor)) { //Loops until it is given an id that exists
       cout << "Faculty ID doesn't exist" << endl;
       cout << "Enter faculty ID: " << endl;
       cin >> advisor;
     }
     Student s = Student(id, name, level, field, GPA, advisor);
-    addAdvisee(advisor, id);
+    addAdvisee(advisor, id); //Adds student to advisee list of given faculty
     return s;
   }
 
 }
-
+//Prompts user for faculty informatoin to create faculty student
 Faculty DBHandler::promptForFaculty() {
   int id = -1;
   string name = "None";
@@ -354,7 +355,7 @@ void DBHandler::fillEmptyAdvisors() { //Gives students an advisor if they don't 
   if(!facTree.isEmpty() && !studTree.isEmpty()) {
     DoublyLinkedList<int> advisees = studTree.fillEmptyAdv(facTree.getRoot()->key.getID());
     advisees.printList(0);
-    if(!advisees.isEmpty()) {
+    if(!advisees.isEmpty()) { //If there were students without an advisor it fills the advisee list of the root of faculty tree with all those students
       fillEmptyAdvisees(advisees);
     }
   }
@@ -363,7 +364,7 @@ void DBHandler::fillEmptyAdvisors() { //Gives students an advisor if they don't 
 void DBHandler::fillEmptyAdvisees(DoublyLinkedList<int> advisees) { //Takes list of students that didn't have an advisor and adds them to the root faculty's advisees
   facTree.getRoot()->key.addAdvisees(advisees); //NEeds to add advisees not set
 }
-
+//Outputs the information in database to two separate files in CSV format to be read easily by program
 void DBHandler::save() {
   string s = "";
   string f = "";
@@ -380,13 +381,13 @@ void DBHandler::save() {
   facFile << f;
   facFile.close();
 }
-
+//Reads information from the files if there are any and adds them into the student and faculty trees
 void DBHandler::load() {
   string line;
   ifstream studFile ("masterStudent.txt");
   if (studFile.is_open())
   {
-    while ( getline (studFile,line) )
+    while ( getline (studFile,line) ) //Each line is a new student to add
     {
       Student s;
       int id = -1;
@@ -396,10 +397,10 @@ void DBHandler::load() {
       double GPA = 0.0;
       int advisor = -1;
 
-      string currentVal = "";
-      int varNum = 0;
+      string currentVal = ""; //Value of the variable to add to student
+      int varNum = 0; //Indicates which variable the string parsing is on
 
-      for(int i = 0; i < line.size(); ++i) {
+      for(int i = 0; i < line.size(); ++i) { //Iterates through string with individual student information to parse out all individual variable values
 
         if(line[i] == (',') || i == line.size() - 1) {
           if(varNum == 0) {
@@ -451,7 +452,7 @@ void DBHandler::load() {
   ifstream facFile ("masterFaculty.txt");
   if (facFile.is_open())
   {
-    while ( getline (facFile,linef) )
+    while ( getline (facFile,linef) )//Iterates through each line of the file to get all faculty
     {
       Faculty f;
       int id = -1;
